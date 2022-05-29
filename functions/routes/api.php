@@ -3,17 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ChartController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\Budgetplanning;
-use App\Http\Controllers\ViewDetailController;
-use App\Http\Controllers\InitiativeController;
-use App\Http\Controllers\UploadController;
-use App\Http\Controllers\CockpitController;
-use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\FinanceController;
 /*

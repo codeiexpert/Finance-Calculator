@@ -2,11 +2,11 @@
   <div class="content d-flex flex-column flex-column-fluid height-100" id="kt_content">
     <div class="post d-flex flex-column-fluid" id="kt_post">
       <div id="kt_content_container" class="container-fluid">
-        <div class="row filter-demo-div">
+        <div class="row filter-mxd-div">
           <div class="col-md-12">
             <div class="d-flex flex-stack">
               <div class="d-inline-block">
-                <h1 class="d-inline-block align-items-center text-dark fw-bolder m-0 fs-3">{{ $t('Finance Finance')}}</h1>
+                <h1 class="d-inline-block align-items-center text-dark fw-bolder m-0 fs-3">{{ $t('Debt Finance')}}</h1>
               </div>
               <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
                 <div class="btn btn-icon btn-active-light-primary" id="kt_aside_mobile_toggle">
@@ -28,7 +28,7 @@
              <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title m-0 fw-bolder">{{$t('Finance Finance')}}</h3>
+                    <h3 class="card-title m-0 fw-bolder">{{$t('Debt Finance')}}</h3>
                     </div>
                     <div class="card-body">
                     <div class="row">
@@ -37,27 +37,27 @@
                             <label class="fw-bolder mb-2">{{$t('Darlehensgeber')}}</label>
                             <div class="input-group flex-nowrap">
                                 <div class="custom-vselect w-100 theme-dropdown">
-                                    <v-select class="select-bank" :placeholder="$t('Select Bank')" v-model="finanace_data.selectedBank" :options="banks.map(bank => ({label: bank.name, value: bank.id }))" :clearable="false" :searchable="false" single-line ></v-select>
+                                    <v-select class="select-bank" :placeholder="$t('Select Bank')" v-model="debt_data.selectedBank" :options="banks.map(bank => ({label: bank.name, value: bank.id }))" :clearable="false" :searchable="false" single-line ></v-select>
                                 </div>
-                                <div class="input-group-append ms-1">
-                                <button class="btn btn-secondary px-4 py-3 h-35px d-flex align-items-center justify-content-center" type="button" v-tooltip="$t('Add New Bank')" v-on:click="showBankModal">
-                                    <span class="svg-icon svg-icon-primary m-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                            width="24px" height="24px"
-                                            viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1"
-                                            fill="none" fill-rule="evenodd">
-                                            <rect fill="#000000" x="4" y="11"
-                                                width="16" height="2" rx="1"></rect>
-                                            <rect fill="#000000" opacity="0.3"
-                                                transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                x="4" y="11" width="16" height="2"
-                                                rx="1"></rect>
-                                            </g>
-                                        </svg>
+                                <div class="input-group-append">
+                                    <span class="input-group-text border-start-0 rounded-start-0 border-gray-200 p-4 cursor-pointer" v-tooltip="$t('Add New Bank')" v-on:click="showBankModal">
+                                        <span class="svg-icon svg-icon-primary m-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1"
+                                                fill="none" fill-rule="evenodd">
+                                                <rect fill="#000000" x="4" y="11"
+                                                    width="16" height="2" rx="1"></rect>
+                                                <rect fill="#000000" opacity="0.3"
+                                                    transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                    x="4" y="11" width="16" height="2"
+                                                    rx="1"></rect>
+                                                </g>
+                                            </svg>
+                                        </span>
                                     </span>
-                                </button>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <label class="fw-bolder mb-2">{{$t('Darlehensform')}}</label>
                             <div class="w-100">
                                 <div class="custom-vselect w-100 theme-dropdown">
-                                    <v-select class="select-loan" :placeholder="$t('Select Type Of Loan')" v-model="finanace_data.selectedLoanType" :options="type_of_loans.map(loan => ({label: loan.name, value: loan.value }))" :clearable="false" :searchable="false" single-line  v-on:change="checkLoanType"></v-select>
+                                    <v-select class="select-loan" :placeholder="$t('Select Type Of Loan')" v-model="debt_data.selectedLoanType" :options="type_of_loans.map(loan => ({label: loan.name, value: loan.value }))" :clearable="false" :searchable="false" single-line  @close="checkLoanType"></v-select>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                         <div class="col-12">
                             <div class="checkbox-list mt-md-5 mt-4">
                                 <label class="checkbox cursor-pointer">
-                                    <input type="checkbox" class="form-check-input align-middle" id="shareholderLoanCheck" v-on:change="checkShareholderLoan" v-model="finanace_data.shareholderLoanCheck" >
+                                    <input type="checkbox" class="form-check-input align-middle" id="shareholderLoanCheck" v-on:change="checkShareholderLoan" v-model="debt_data.shareholderLoanCheck" >
                                     {{$t('Gesellschafterdarlehen')}}
                                 </label>
                             </div>
@@ -94,7 +94,7 @@
                                 <div class="input-group align-items-center">
                                     <div class="input-group-prepend"><span class="input-group-text bg-white border-end-0 rounded-end-0 border-gray-200">€</span> 
                                     </div>
-                                    <vue-numeric-input v-model="finanace_data.principleAmmount" class="h-auto" className="border-start-0 rounded-start-0 border-gray-200" :min="0" placeholder="250.00" :precision="2" controls-type="updown"></vue-numeric-input>
+                                    <vue-numeric class="form-control border-0"  :precision="2" separator="." v-model.number="debt_data.principleAmmount" ></vue-numeric>
                                 </div>
                                 </div>
                             </div>
@@ -105,15 +105,17 @@
                                 <div class="d-md-flex">
                                 <!-- begin:: month -->
                                     <div class="w-md-50 me-md-3">
-                                        <div class="custom-vselect w-100 theme-dropdown">
-                                            <v-select class="select-month" :placeholder="$t('Select Month')" v-model="finanace_data.paymentPeriod.month" :options="payment_months.map(month => ({label: month.id, value: month.value }))" :clearable="false" :searchable="false" single-line  v-on:change="createPikOptions"></v-select>
+                                        <div class="custom-vselect custom-vselect-bg-white custom-vselect-align-label w-100 theme-dropdown">
+                                            <label for="month" class="fw-light">{{$t('Select Month')}}</label>
+                                            <v-select class="select-month" id="month" :placeholder="$t('Select Month')" v-model="debt_data.paymentPeriod.month" :options="payment_months.map(month => ({label: month.id, value: month.value }))" :clearable="false" :searchable="false" single-line @close="createPikOptions"></v-select>
                                         </div>
                                 </div>
                                 <!-- end:: month -->
                                 <!-- begin:: year -->
                                 <div class="w-md-50 ms-md-3">
-                                    <div class="custom-vselect w-100 theme-dropdown">
-                                        <v-select class="select-year" :placeholder="$t('Select Year')" v-model="finanace_data.paymentPeriod.year" :options="payment_years.map(year => ({label: year.id, value: year.value }))" :clearable="false" :searchable="false" single-line v-on:change="createPikOptions"></v-select>
+                                    <div class="custom-vselect custom-vselect-bg-white custom-vselect-align-label w-100 theme-dropdown">
+                                        <label for="year" class="fw-light">{{$t('Select Year')}}</label>
+                                        <v-select class="select-year" id="year" :placeholder="$t('Select Year')" v-model:value="debt_data.paymentPeriod.year" :options="payment_years.map(year => ({label: year.id, value: year.value }))" :clearable="false" :searchable="false" single-line @close="createPikOptions"></v-select>
                                     </div>
                                 </div>
                                 <!-- end:: year -->
@@ -127,7 +129,7 @@
                             <div class="col-md-4 col-12">
                                 <label class="fw-bolder mb-2">{{ $t('Zins') }}</label>
                                 <div class="input-group align-items-center">
-                                    <vue-numeric-input v-model="finanace_data.interestRate" class="h-auto" className="border-start-0 rounded-start-0 border-gray-200" :min="0" :placeholder="$t('Enter Interest Rate')" :precision="2" controls-type="updown"></vue-numeric-input>
+                                    <vue-numeric class="form-control border-0"  :precision="2" v-model.number="debt_data.interestRate" :minus="false"   :min="0" :max="100"  ></vue-numeric>
                                     <div class="input-group-append"><span class="input-group-text bg-white border-end-0 rounded-end-0 border-gray-200">%</span> 
                                     </div>
                                 </div>
@@ -136,8 +138,8 @@
                                 <!--begin::dropdown-->
                                 <label class="fw-bolder mb-2">{{$t('Unterjährige Tilgungsfrequenz')}}</label>
                                 <div class="w-100">
-                                    <div class="custom-vselect w-100 theme-dropdown">
-                                        <v-select class="select-payment-frequencies" :placeholder="$t('Select Payment Frequency')" v-model="finanace_data.paymentFrequency" :options="payment_frequencies.map(frequency => ({label: frequency.name, value: frequency.value }))" :clearable="false" :searchable="false" single-line v-on:change="createPikOptions" ></v-select>
+                                    <div class="custom-vselect custom-vselect-bg-white w-100 theme-dropdown">
+                                        <v-select class="select-payment-frequencies" :placeholder="$t('Select Payment Frequency')" v-model="debt_data.paymentFrequency" :options="payment_frequencies.map(frequency => ({label: frequency.name, value: frequency.value }))" :clearable="false" :searchable="false" single-line @close="createPikOptions" ></v-select>
                                     </div>
                                 </div>
                                 <!--end::dropdown-->
@@ -147,7 +149,7 @@
                             <!-- <div class="col-md-6 col-12">
                                 <label class="fw-bolder mb-2">{{ $t('Zinsberechnung') }}</label>
                                 <div class="custom-vselect w-100 theme-dropdown">
-                                    <v-select class="select-calc-type" :placeholder="$t('Select Calculation Type')" v-model="finanace_data.calculationType" :options="type_of_calcualtions.map(calc => ({label: calc.name, value: calc.value }))" :clearable="false" :searchable="false" single-line ></v-select>
+                                    <v-select class="select-calc-type" :placeholder="$t('Select Calculation Type')" v-model="debt_data.calculationType" :options="type_of_calcualtions.map(calc => ({label: calc.name, value: calc.value }))" :clearable="false" :searchable="false" single-line ></v-select>
                                 </div>
                             </div> -->
                             <!--end:: date-->
@@ -160,7 +162,7 @@
                             <div class="col-md-6 col-12">
                                 <label class="fw-bolder mb-2">{{$t('Sonderzahlungen')}}</label>
                                 <div class="w-100">
-                                <vue-numeric-input v-model="finanace_data.specialPayment[index].payment" class="w-auto h-auto" className="border-start-0 rounded-start-0 border-gray-200" :min="0" :placeholder="'€ 250'" :precision="2" controls-type="updown"></vue-numeric-input>
+                                    <vue-numeric class="form-control border-0"  separator="." :precision="2" v-model.number="tempSpecialPayment[index].payment" :minus="false" :min="0" :max="debt_data.principleAmmount" ></vue-numeric>
                                 </div>
                             </div>
                             <!--end:: interest rate-->
@@ -168,9 +170,17 @@
                             <div class="col-md-6 col-12">
                                 <div class="d-flex align-items-end">
                                 <div class="flex-grow-1">
-                                    <label class="fw-bolder mb-2">Select Date</label>
+                                    <label class="fw-bolder mb-2">{{ $t('Select Date') }}</label>
                                     <div class="w-100">
-                                        <input class="form-control" type="date" id="select-date" v-model="finanace_data.specialPayment[index].date" />
+                                        <div class="input-group">
+                                            <input type="text" :class="'form-control cursor-pointer datepicker-select-date '+'special-payment'+index+''" readonly="readonly" placeholder="Select date" v-model="tempSpecialPayment[index].date">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text bg-white border-start-0 rounded-start-0 border-gray-200 p-4">
+                                                    <i class="la la-calendar-check-o"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- <input class="form-control" type="date" id="select-date" v-model="debt_data.specialPayment[index].date" /> -->
                                     </div>
                                 </div>
                                 <button class="btn btn-secondary px-4 py-3 ms-2" type="button" v-on:click="appendSpecialPayemntField"  v-show="index == dynamicSpecialPaymentFields.length -1">
@@ -210,7 +220,7 @@
                                 <div class="input-group align-items-center">
                                     <div class="input-group-prepend"><span class="input-group-text bg-white border-end-0 rounded-end-0 border-gray-200">€</span> 
                                     </div>
-                                    <vue-numeric-input v-model="finanace_data.bulletLoanPayment" class="w-auto h-auto" className="border-start-0 rounded-start-0 border-gray-200" :min="0" :max="finanace_data.principleAmmount ? finanace_data.principleAmmount/1.1 : 1000" placeholder="250.00" :precision="2" controls-type="updown"></vue-numeric-input>
+                                    <vue-numeric class="form-control border-0"  separator="." :precision="2" v-model.number="debt_data.bulletLoanPayment" :minus="false"   :min="0" :max="debt_data.principleAmmount ? debt_data.principleAmmount/1.1 : 1000" ></vue-numeric>
                                 </div>
                             </div>
                         </div>
@@ -219,7 +229,7 @@
                     </div>
                     <!--end:: annuity loan-->
                     <!--begin::PIK options-->
-                    <div class="shareholder-loan-div" v-show="finanace_data.shareholderLoanCheck">                            
+                    <div class="shareholder-loan-div" v-show="debt_data.shareholderLoanCheck">                            
                         <div class="row mt-md-6 mt-4">
                             <div class="col-12">
                                 <div class="d-flex align-items-center justify-content-between mb-4" v-if="pikOptionsTitle.length > 0">
@@ -250,7 +260,7 @@
                                     <div class="d-flex align-items-center gap-3 flex-wrap py-3">
                                         <div class="checkbox-list" v-for="(option, key) in pikOptions" v-if="option.for == title">
                                             <label :class="isNaN(title) ? 'checkbox cursor-pointer w-200px' : 'checkbox cursor-pointer' ">
-                                            <input type="checkbox" :class="'form-check-input pik-option-'+option.for" name="checkboxes-pik" v-on:change="selectPikOptions(title)"  :value="option | filterValue(key)" v-model.lazy="finanace_data.unsortedPikOptionsData">
+                                            <input type="checkbox" :class="'form-check-input pik-option-'+option.for" name="checkboxes-pik" v-on:change="selectPikOptions(title)"  :value="option | filterValue(key)" v-model.lazy="debt_data.unsortedPikOptionsData">
                                                 {{ option.data }}
                                             </label>
                                         </div>
@@ -266,7 +276,14 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zeitpunkt der ersten Tilgung')}}</label>
                             <div class="w-100">
-                                <input class="form-control form-control-solid" type="date" id="select-date" v-model="finanace_data.firstFinanceRepaymentDate" v-on:change="createPikOptions">
+                                <div class="input-group">                                    
+                                    <input type="text"  class="form-control cursor-pointer datepicker-select-date first_debt_interest_date border-gray-200" readonly="readonly" placeholder="Select date" v-model="debt_data.firstDebtRepaymentDate" v-on:input="createPikOptions">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-start-0 rounded-start-0 border-gray-200  p-4">
+                                            <i class="la la-calendar-check-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -274,7 +291,14 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zinsbindung bis')}}</label>
                             <div class="w-100">
-                                <input class="form-control form-control-solid" type="date" id="select-date-sec"  v-model="finanace_data.interestPayDate">
+                                <div class="input-group">
+                                    <input type="text" class="form-control cursor-pointer datepicker-select-date interest_pay_date border-gray-200" readonly="readonly" placeholder="Select date" v-model="debt_data.interestPayDate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-start-0 rounded-start-0 border-gray-200  p-4">
+                                            <i class="la la-calendar-check-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -282,7 +306,14 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zeitpunkt der ersten Zinszahlung')}}</label>
                             <div class="w-100">
-                                <input class="form-control form-control-solid" type="date" id="select-date-three" v-model="finanace_data.dateOfFirstInterestPayment">
+                                <div class="input-group">
+                                    <input type="text" class="form-control cursor-pointer datepicker-select-date first_interest_pay_date border-gray-200" readonly="readonly" placeholder="Select date" v-model="debt_data.dateOfFirstInterestPayment">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white border-start-0 rounded-start-0 border-gray-200  p-4">
+                                            <i class="la la-calendar-check-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -291,8 +322,8 @@
                     <!--begin::buttons-->
                     <div class="row mt-md-6 mt-4">
                         <div class="col-12 text-md-end">
-                            <button class="btn btn-sm btn-demo" type="button" @click.prevent="SubmitData('with-pik')" :disabled="pikViewEnable">{{ $t('PIK Option') }}</button>
-                            <button class="btn btn-sm btn-demo" type="button" @click.prevent="SubmitData('without-pik')" :disabled="withoutPikViewEnable">{{ $t('Without PIK Option') }}</button>
+                            <button class="btn btn-sm btn-mxd" type="button" @click.prevent="SubmitData('with-pik')" :disabled="pikViewEnable">{{ $t('PIK Option') }}</button>
+                            <button class="btn btn-sm btn-mxd" type="button" @click.prevent="SubmitData('without-pik')" :disabled="withoutPikViewEnable">{{ $t('Without PIK Option') }}</button>
                         </div>
                     </div>
                     <!--end::buttons-->
@@ -307,7 +338,7 @@
     </div>
   </div>  
     <!-- Bank modal -->
-    <div class="modal fade" id="bank-firm" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">       
+    <div class="modal fade" id="bank-form" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">       
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-header pb-0 border-0 justify-content-between px-5">
@@ -339,10 +370,10 @@
 </template>
 
 <script>
-  import Finance from "../../apis/Finance"  
+  import Debt from "../../apis/Debt"  
 
   export default {
-    name: 'FinancingView',
+    name: 'DebtFinancingView',
     data() {
       return {
         loader: false,  
@@ -362,31 +393,13 @@
                 value:"bullet-loan"
             }
         ],
-        type_of_calcualtions:[
-            {
-                name: 'act/360 ('+this.$t('Eurozinsmethode, französische Zinsmethode')+')',
-                value:"act/360"
-            },
-            {
-                name: 'act/365 ('+this.$t('englische Zinsmethode')+')',
-                value:"act/365"
-            },
-            {
-                name: 'act/act ('+this.$t('Effektivzinsmethode')+ ')',
-                value:"act/act"
-            },
-            {
-                name: '30/360 ('+this.$t('deutsche Zinsmethode')+')',
-                value:"30/360"
-            }
-        ],
         payment_frequencies:[
             {
                 name: this.$t('Monthly'),
                 value:"monthly"
             },
             {
-                name: this.$t('Quarterly'),
+                name: this.$t('Quaterly'),
                 value:"quaterly"
             },
             {
@@ -411,33 +424,28 @@
         checkPikAll: false,
         pikViewEnable: true,
         withoutPikViewEnable: false,
-        finanace_data: {
+        tempSpecialPayment:[
+            {
+                payment: 0,
+                date:null,
+            }
+        ],
+        debt_data: {
             selectedBank:"No Bank Added",
             shareholderLoanCheck: false,
             selectedLoanType: null,
-            principleAmmount: null,
-            interestRate: null,
+            principleAmmount: 0,
+            interestRate: 0,
             paymentFrequency: null,
-            specialPayment:[
-                {
-                    payment: null,
-                    date:null,
-                }
-            ],
+            specialPayment:[],           
             paymentPeriod: {
-                year: {
-                    label: 0,
-                    value: 0
-                },
-                month: {
-                    label: 0,
-                    value: 0
-                } 
+                month: 0,
+                year: 0
             },
-            firstFinanceRepaymentDate: null,
+            firstDebtRepaymentDate: null,
             interestPayDate:null,
             dateOfFirstInterestPayment:null,
-            bulletLoanPayment:null,
+            bulletLoanPayment:0,
             unsortedPikOptionsData: [],   
             pikOptionsData:[]    
         }        
@@ -463,21 +471,30 @@
     },
     mounted() {
         if(localStorage.user_role == 'Admin') {
-                this.$router.push({ name: "UserManagement" })
+                this.$router.push({ name: "ClientManagement" })
         }else{
-            this.getBanks()
-            this.createMonthYearValues()
+            var user_access  = localStorage.getItem('user_access')
+
+            if( user_access == 'all' || user_access.includes('debt-finance') == true ){
+                this.getBanks()
+                this.createMonthYearValues()
+            }else{
+                this.$router.push({ name: "Profile" })
+            }
         }
     },
     methods: {
+        async addDate(type){
+            console.log(type)
+        },
         async getBanks(){
             this.loader = true
-            Finance.getBanks().then(res => {
+            Debt.getBanks().then(res => {
                 if(res.data.banks.length > 0){
                     this.banks = res.data.banks
 
-                    if(this.finanace_data.selectedBank == 'No Bank Added'){
-                        this.finanace_data.selectedBank = null
+                    if(this.debt_data.selectedBank == 'No Bank Added'){
+                        this.debt_data.selectedBank = null
                     }
                 }
                 this.loader = false
@@ -491,7 +508,7 @@
                 return false;
             }
             jQuery(event.target).addClass('disabled')
-            Finance.addBank(this.addBank).then(res => {
+            Debt.addBank(this.addBank).then(res => {
                 if(res.data.success == false){
                     jQuery(event.target).removeClass('disabled')
                     this.$toast.error(this.$t(res.data.message))
@@ -501,19 +518,19 @@
                     this.getBanks()
                     this.$toast.success(this.$t(res.data.message))
                 }
-                
             }).catch(error=> {
-                this.$toast.error(this.$t(res.data.message))
+                jQuery(event.target).removeClass('disabled')
+                this.$toast.error(this.$t(error.response.data.message))
             })
         },
         async createMonthYearValues(){  
-            for(var i=0; i <= 11; i++){
+            for(var i=1; i <= 11; i++){
                 this.payment_months.push({
                     id: i,
                     value: i
                 });
             }
-            for(var j=0; j <= 50; j++){
+            for(var j=1; j <= 50; j++){
                 this.payment_years.push({
                     id: j,
                     value: j
@@ -523,16 +540,32 @@
         },
         async appendSpecialPayemntField(){
 
-            this.finanace_data.specialPayment.push({
-                payment:null,
+            this.tempSpecialPayment.push({
+                payment:0,
                 date:null
             })
+
+            setTimeout(() => {
+                $('.datepicker-select-date').daterangepicker({
+                    singleDatePicker: true,
+                    autoApply:true,
+                    autoUpdateInput: false,            
+                    drops: 'auto',
+                    showDropdowns: true,
+                });
+                $('.datepicker-select-date').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('MM/DD/YYYY'))
+                    $(this)[0].dispatchEvent(new CustomEvent('input'));
+                });
+            }, 0);
+
             this.dynamicSpecialPaymentFields.push(this.dynamicSpecialPaymentFields.length)
+            
             
         },   
         async removeSpecialPayemntField(index){
             this.$delete(this.dynamicSpecialPaymentFields, index)
-            this.$delete(this.finanace_data.specialPayment, index)
+            this.$delete(this.tempSpecialPayment, index)
         },  
         async selectAllPikOptions(event, title){
             if(title == 'Semi Yearly'){
@@ -547,99 +580,103 @@
             }
         },
         async validateView(){
-                this.validationErrors = []
-                let translatedArray =  {
-                    'payment_frequency' : 'Unterjährige Tilgungsfrequenz',
-                    'payment_due' : 'Finanzierung endfällig am',
-                    'first_deb_repay_date': 'Zeitpunkt der ersten Tilgung',
-                    'select_bank': 'Darlehensgeber',
-                    'select_loan': 'Darlehensform',
-                    'principle_ammount': 'Kreditsumme',
-                    'balloon_payment': 'Ballon Zahlung',
-                    'interest_rate': 'Zins'
-                }
+            this.validationErrors = []
+            let translatedArray =  {
+                'payment_frequency' : 'Unterjährige Tilgungsfrequenz',
+                'payment_due' : 'Finanzierung endfällig am',
+                'first_deb_repay_date': 'Zeitpunkt der ersten Tilgung',
+                'select_bank': 'Darlehensgeber',
+                'select_loan': 'Darlehensform',
+                'principle_ammount': 'Kreditsumme',
+                'balloon_payment': 'Ballon Zahlung',
+                'interest_rate': 'Zins'
+            }
 
-              
-                if(this.finanace_data.paymentFrequency == null){
-                    this.validationErrors.push(translatedArray['payment_frequency'])
-                }
-                if(this.finanace_data.paymentPeriod.year.value == 0 && this.finanace_data.paymentPeriod.month.value == 0){
-                    this.validationErrors.push(translatedArray['payment_due'])
-                }
-                if(this.finanace_data.firstFinanceRepaymentDate == null){
-                    this.validationErrors.push(translatedArray['first_deb_repay_date'])
-                }              
-                if(this.finanace_data.principleAmmount == 0 || this.finanace_data.principleAmmount == null){
-                    this.validationErrors.push(translatedArray['principle_ammount'])
-                }
-                if(this.finanace_data.principleAmmount == 0 || this.finanace_data.principleAmmount == null){
-                    this.validationErrors.push(translatedArray['principle_ammount'])
-                }
-                if(this.finanace_data.interestRate == 0 || this.finanace_data.interestRate == null){
-                    this.validationErrors.push(translatedArray['interest_rate'])
-                }
-                if(this.finanace_data.selectedBank == null){
-                    this.validationErrors.push(translatedArray['select_bank'])
-                }
-                if(this.finanace_data.selectedLoanType == null){
-                    this.validationErrors.push(translatedArray['select_loan'])
-                }
-                if(this.finanace_data.bulletLoanPayment == null && this.finanace_data.selectedLoanType != null && this.finanace_data.selectedLoanType.value == 'bullet-loan'){
-                    this.validationErrors.push(translatedArray['balloon_payment'])
-                }
-
-              
-                
-               
+            if(this.debt_data.paymentFrequency == null){
+                this.validationErrors.push(translatedArray['payment_frequency'])
+            }
+            if(this.debt_data.paymentPeriod.month == 0 && this.debt_data.paymentPeriod.year == 0){
+                this.validationErrors.push(translatedArray['payment_due'])
+            }
+            if(this.debt_data.firstDebtRepaymentDate == null){
+                this.validationErrors.push(translatedArray['first_deb_repay_date'])
+            }              
+            if(this.debt_data.principleAmmount == 0){
+                this.validationErrors.push(translatedArray['principle_ammount'])
+            }
+            if(this.debt_data.interestRate == 0 ){
+                this.validationErrors.push(translatedArray['interest_rate'])
+            }
+            if(this.debt_data.selectedBank == null){
+                this.validationErrors.push(translatedArray['select_bank'])
+            }
+            if(this.debt_data.selectedLoanType == null){
+                this.validationErrors.push(translatedArray['select_loan'])
+            }
+            if(this.debt_data.bulletLoanPayment == 0 && this.debt_data.selectedLoanType != null && this.debt_data.selectedLoanType.value == 'bullet-loan'){
+                this.validationErrors.push(translatedArray['balloon_payment'])
+            }               
         },       
         async SubmitData(type){
-
             this.validateView()
             if(this.validationErrors.length > 0){
-                this.$toast.error(this.$t('Please fill all required fields: ( ')+this.validationErrors.join(", ")+' )')
+                this.$toast.error(this.$t('Please fill all required fields:')+' ( '+this.validationErrors.join(", ")+' )')
             }else{
                 var self = this
-                if(this.finanace_data.specialPayment && this.finanace_data.selectedLoanType != null && this.finanace_data.selectedLoanType.value == 'amortizing-loan'){                    
+                if(this.tempSpecialPayment && this.debt_data.selectedLoanType != null && this.debt_data.selectedLoanType.value == 'amortizing-loan'){                    
                     var failed = 0
-                    // console.log(this.finanace_data.specialPayment)
-                    this.finanace_data.specialPayment.forEach( function(ele, index){
-                        if(ele.payment == null && ele.date != null){
+                    this.debt_data.specialPayment = []
+                   
+                    this.tempSpecialPayment.forEach( function(ele, index){
+                        if((ele.payment == null || ele.payment == 0)  && ele.date != null){
                             self.$toast.error(self.$t('Please fill payments for special payments with unfilled payments'))       
                             failed = 1                
-                        }else if(ele.payment != null && ele.payment != 0 && ele.date == null){
+                        }else if( (ele.payment != null && ele.payment != 0) && ele.date == null){
                             self.$toast.error(self.$t('Please fill date for special payments with unfilled dates'))
                             failed = 1  
+                        }else if((ele.payment != null && ele.payment != 0) && ele.date != null){
+                            var date = new Date(ele.date)
+                            date.setDate(date.getDate() + 1)
+                            self.debt_data.specialPayment.push({
+                                date: date.toISOString().slice(0, 10),
+                                payment: ele.payment
+                            })
                         }
+
                     })
                     if(failed == 1){
                         return false
                     }
+                    
                 }
                 if(type == 'with-pik'){
-                    if(this.finanace_data.shareholderLoanCheck == false){
+                    if(this.debt_data.shareholderLoanCheck == false){
                         this.$toast.error(this.$t('Please check shareholder loan checkbox to proceed'))
                         return false
                     }
 
-                    if(this.finanace_data.unsortedPikOptionsData.length < 1){
+                    if(this.debt_data.unsortedPikOptionsData.length < 1){
                         this.$toast.error(this.$t('Please select atleast one Pik option'))
                         return false
                     }
 
-                    var unSortedArray = this.finanace_data.unsortedPikOptionsData
+                    var unSortedArray = this.debt_data.unsortedPikOptionsData
                     var sortedArray = []
                     unSortedArray.forEach(function(ele){
                         var element_data = JSON.parse(ele)
                         sortedArray[element_data[0].key] = element_data[0].data
                     })
-                    this.finanace_data.pikOptionsData = sortedArray.filter(function (item) { return item != undefined });
-                }                
+                    this.debt_data.pikOptionsData = sortedArray.filter(function (item) { return item != undefined });
+                }  
+
+                // console.log(this.debt_data)              
                 this.loader = true
-                Finance.saveFinanceData(this.finanace_data).then(res => {
+
+                Debt.saveDebtFinanceData(this.debt_data).then(res => {
                     if(type == 'with-pik'){
-                        this.$router.push({ name: "FinancingWithPikView",params:{id: res.data.finance_id} })
+                        this.$router.push({ name: "DebtFinancingWithPikView",params:{id: res.data.debt_finance_id} })
                     }else{
-                        this.$router.push({ name: "FinancingWithoutPikView",params:{id: res.data.finance_id} })
+                        this.$router.push({ name: "DebtFinancingWithoutPikView",params:{id: res.data.debt_finance_id} })
                     }                    
                     this.loader = false
                 }).catch(error=> {
@@ -669,19 +706,28 @@
            
         },
         async checkLoanType(event){
-            if(this.finanace_data.selectedLoanType.value == 'amortizing-loan'){
-                this.showSpecialPayment = true
-                this.showBulletLoanPayment = false
-            }else if(this.finanace_data.selectedLoanType.value == 'bullet-loan'){
-                this.showBulletLoanPayment = true
-                this.showSpecialPayment = false
-            }else{
-                this.showBulletLoanPayment = false
-                this.showSpecialPayment = false
+            this.tempSpecialPayment = [
+                {
+                    payment: 0,
+                    date:null,
+                }
+            ]
+            this.debt_data.bulletLoanPayment = 0
+            if(this.debt_data.selectedLoanType != null){
+                if(this.debt_data.selectedLoanType.value == 'amortizing-loan'){
+                    this.showSpecialPayment = true
+                    this.showBulletLoanPayment = false                
+                }else if(this.debt_data.selectedLoanType.value == 'bullet-loan'){
+                    this.showBulletLoanPayment = true
+                    this.showSpecialPayment = false
+                }else{
+                    this.showBulletLoanPayment = false
+                    this.showSpecialPayment = false
+                }
             }
         },
         async checkShareholderLoan(){
-            if(this.finanace_data.shareholderLoanCheck == true){
+            if(this.debt_data.shareholderLoanCheck == true){
                 this.withoutPikViewEnable = true
                 this.pikViewEnable = false
             }else{
@@ -690,14 +736,14 @@
             }
         },
         async createPikOptions(){ 
-            this.finanace_data.unsortedPikOptionsData = []
-            if((this.finanace_data.paymentPeriod.year.value != 0 || this.finanace_data.paymentPeriod.month.value != 0) && this.finanace_data.firstFinanceRepaymentDate != null && this.finanace_data.paymentFrequency != null){
+            this.debt_data.unsortedPikOptionsData = []
+            if((this.debt_data.paymentPeriod.month != 0 || this.debt_data.paymentPeriod.year != 0  ) && this.debt_data.firstDebtRepaymentDate != null && this.debt_data.paymentFrequency != null){
 
                 const months_arr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']   
-                var month = this.finanace_data.paymentPeriod.month.value
-                var year = this.finanace_data.paymentPeriod.year.value
-                var freq = this.finanace_data.paymentFrequency.value
-                var first_repayment_date = this.finanace_data.firstFinanceRepaymentDate
+                var month = this.debt_data.paymentPeriod.month ? this.debt_data.paymentPeriod.month.value : 0
+                var year = this.debt_data.paymentPeriod.year ? this.debt_data.paymentPeriod.year.value : 0
+                var freq = this.debt_data.paymentFrequency.value
+                var first_repayment_date = this.debt_data.firstDebtRepaymentDate
                 var total_number_of_months = (parseInt(year)*12) + parseInt(month)  
                 
                 this.pikOptionsTitle = []
@@ -708,13 +754,16 @@
                 if(freq == 'monthly'){
                     for( var i = 0; i < total_number_of_months; i++){
 
-                        var repay_date = new Date(first_repayment_date)
+                        var date = new Date(first_repayment_date)
+                        var repay_date = new Date(date.getFullYear(), date.getMonth(), 1)
                         repay_date.setMonth(repay_date.getMonth() + i) 
 
                         if(years_arr.indexOf(repay_date.getFullYear()) == -1){
                            years_arr.push(repay_date.getFullYear())                    
                            this.pikOptionsTitle.push(repay_date.getFullYear())
+                        //    console.log(repay_date.getFullYear())
                         }  
+                        // console.log(repay_date.getMonth())
                         this.pikOptions.push({
                             for: repay_date.getFullYear(),
                             data: months_arr[repay_date.getMonth()]
@@ -818,10 +867,10 @@
             
         },
         async showBankModal(){
-            jQuery('#bank-firm').modal('show')
+            jQuery('#bank-form').modal('show')
         },
         async hideBankModal(){
-            jQuery('#bank-firm').modal('hide')
+            jQuery('#bank-form').modal('hide')
             this.addBank = null
         }
     }   

@@ -2,7 +2,7 @@
   <div class="content d-flex flex-column flex-column-fluid height-100" id="kt_content">
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <div id="kt_content_container" class="container-fluid">
-            <div class="row filter-demo-div">
+            <div class="row filter-mxd-div">
                 <div class="col-md-12">
                     <div class="d-flex flex-stack">
                         <div  class="page-title d-flex align-items-center flex-wrap lh-1">
@@ -18,7 +18,7 @@
                         </div>
                         <div class="d-flex align-items-center py-1" v-else>           
                             <div>
-                            <router-link :to="{ name: 'FinanceList' }" exact class="btn btn-sm btn-secondary">
+                            <router-link :to="{ name: 'DebtList' }" exact class="btn btn-sm btn-secondary">
                                 {{ $t('Back') }}
                             </router-link>
                             </div>
@@ -56,13 +56,13 @@
                         <!--begin::PIK options-->
                         <div class="row mt-md-8 mt-4">
                             <div class="col-12">
-                                <label class="fw-bolder me-3">PIK options</label>                                        
+                                <label class="fw-bolder me-3">{{ $t('PIK options') }}</label>                                        
                             </div>
-                            <div class="col-md-12" v-for="(title, key) in pikOptionsTitle" :key="key">
+                            <div class="col-md-12" v-for="title in pikOptionsTitle">
                                 <div class="py-2">
                                     <label class="form-label fw-bolder">{{title}}</label>
-                                    <div class="d-flex align-items-center gap-3 flex-wrap" >
-                                        <div class="checkbox-list" v-for="(option, key) in pikOptions" :key="key" v-if="option.for == title">
+                                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                                        <div class="checkbox-list" v-for="option in pikOptions" v-if="option.for == title">
                                             <label class="checkbox checkbox-disabled">
                                             <input type="checkbox" class="form-check-input opacity-100" name="checkboxes-pik" :checked="true" :disabled="true">
                                                 {{ option.data }}
@@ -80,7 +80,7 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zeitpunkt der ersten Tilgung')}}</label>
                             <div class="w-100">
-                                <input type="date" id="select-date" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled" :value="paymentData.firstFinanceRepaymentDate"/>
+                                <input type="date" id="select-date" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled" :value="paymentData.firstDebtRepaymentDate"/>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -88,7 +88,7 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zinsbindung bis')}}</label>
                             <div class="w-100">
-                                <input type="date" id="select-date-2" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled"  :value="paymentData.interestPayDate != null ? paymentData.interestPayDate : 'N/A'"/>
+                                <input type="date" id="select-date-2" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled"  :value="paymentData.interestPayDate != null ? paymentData.interestPayDate : ''"/>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -96,7 +96,7 @@
                         <div class="col-md-4 col-12">
                             <label class="fw-bolder mb-2">{{$t('Zeitpunkt der ersten Zinszahlung')}}</label>
                             <div class="w-100">
-                                <input type="date" id="select-date-3" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled"  :value="paymentData.dateOfFirstInterestPayment != null ? paymentData.dateOfFirstInterestPayment : 'N/A'"/>
+                                <input type="date" id="select-date-3" class="form-control text-dark opacity-75 form-control-solid" disabled="disabled"  :value="paymentData.dateOfFirstInterestPayment != null ? paymentData.dateOfFirstInterestPayment : ''"/>
                             </div>
                         </div>
                         <!--end:: date-->
@@ -105,9 +105,9 @@
                     <!-- begin::accordion -->
                                     
                     <div class="accordion accordion-flush" id="accordionDuration-data"> 
-                        <div class="accordion-item mb-2" v-for="(year, key) in years" :key="key">
+                        <div class="accordion-item mb-2" v-for="(year, key) in years">
                             <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button fw-bolder text-dark fs-6 bg-light" type="button" data-bs-toggle="collapse" :data-bs-target="'#year-'+year" aria-expanded="false" aria-controls="year-collapseOne">
+                                <button :class="key == 0 ? 'accordion-button fw-bolder text-dark fs-6 bg-light':'accordion-button fw-bolder text-dark fs-6 bg-light collapsed'" type="button" data-bs-toggle="collapse" :data-bs-target="'#year-'+key" aria-expanded="false" aria-controls="year-collapseOne">
                                 <span class="svg-icon svg-icon-dark me-3 svg-icon-2 plus-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -123,32 +123,32 @@
                                         </g>
                                     </svg>
                                 </span>
-                                {{year | formatAccordianHeader}}
+                                <span> {{ year }}</span>
                                 </button>
                             </h2>
-                            <div :id="'year-'+year" :class="key == 0 ? ' accordion-collapse collapse show':'accordion-collapse collapse hide'" aria-labelledby="flush-headingOne" data-bs-parent="#accordionDuration-data">
+                            <div :id="'year-'+key" :class="key == 0 ? ' accordion-collapse collapse show':'accordion-collapse collapse hide'" aria-labelledby="flush-headingOne" data-bs-parent="#accordionDuration-data">
                                 <div class="accordion-body bg-white px-0">
                                 <div class="table-responsive bg-white">
                                     <table class="table table-striped border m-0">
                                         <thead>
                                             <tr>
-                                                <th class="fw-bolder align-top">{{table_dynamic_header}}</th>
-                                                <th class="fw-bolder align-top">Beginning Balance</th>
-                                                <th class="fw-bolder align-top">Periodic Payment <br /><small class="fw-normal">(Without Interest)</small></th>
-                                                <th class="fw-bolder align-top">Interest Due</th>
-                                                <th class="fw-bolder align-top">Total Payment</th>
-                                                <th class="fw-bolder align-top">Ending Balance</th>
+                                                <th class="fw-bolder align-top">{{ $t(table_dynamic_header) }}</th>
+                                                <th class="fw-bolder align-top">{{ $t('Beginning Balance') }}</th>
+                                                <th class="fw-bolder align-top">{{ $t('Periodic Payment') }} <br /><small class="fw-normal">({{ $t('Without Interest') }})</small></th>
+                                                <th class="fw-bolder align-top">{{ $t('Interest Due') }}</th>
+                                                <th class="fw-bolder align-top">{{ $t('Total Payment') }}</th>
+                                                <th class="fw-bolder align-top">{{ $t('Ending Balance') }}</th>
                                             </tr>
                                         </thead>
-                                        <tbody> 
-                                            <tr v-for="(data, index) in years_data" :key="index" v-if="data.for == year">
-                                                    <td>{{data.selected_month}}</td>
-                                                    <td>{{data.main_ammount}}</td>
-                                                    <td>{{data.periodic_payment}}</td>
-                                                    <td>{{data.interest_per_data}}</td>
-                                                    <td>{{data.total_payable_ammount}}</td>
-                                                    <td>{{data.ending_balance}}</td>
-                                            </tr>
+                                        <tbody>
+                                        <tr v-for="data in years_data" v-if="data.for == year">
+                                                <td>{{data.selected_month}}</td>
+                                                <td>{{data.main_ammount}}</td>
+                                                <td>{{data.periodic_payment}}</td>
+                                                <td>{{data.interest_per_data}}</td>
+                                                <td>{{data.total_payable_ammount}}</td>
+                                                <td>{{data.ending_balance}}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -170,10 +170,10 @@
 </template>
 
 <script>
-  import Finance from "../../apis/Finance"  
+  import Debt from "../../apis/Debt"  
 
   export default {
-    name: 'FinancingWithPikView',
+    name: 'DebtFinancingWithPikView',
     data() {
       return {
         loader: false, 
@@ -191,7 +191,7 @@
             selectedBank:null,
             selectedLoanType: null,
             selectedLoanLabel: null,
-            firstFinanceRepaymentDate: null,
+            firstDebtRepaymentDate: null,
             interestPayDate: null,
             dateOfFirstInterestPayment: null,
             specialPayments: null,
@@ -202,112 +202,103 @@
         }       
       }
     },
-    filters:{
-        formatAccordianHeader(obj){
-            if(obj == 'semi-yearly'){
-                return 'Half Yearly'
-            }else if(obj == 'quaterly'){
-               return 'Quaterly'
-            }else if(obj == 'yearly'){
-               return 'Yearly'
-            }else{
-                return "Year "+obj
-            }
-        }
-    },
     mounted() {
         if(this.$route.params.id){
             this.loader = true
-            Finance.getFinanceData(this.$route.params.id).then(res => {
+            Debt.getDebtFinanceData(this.$route.params.id).then(res => {
                 
                 let finance_data = res.data.finance_data
                 let payment_data = JSON.parse(finance_data.payment_data)
                 
-                this.paymentFrequency = finance_data.payment_frequency
-                this.paymentData.paymentYear = finance_data.finance_year
-                this.paymentData.paymentMonth = finance_data.finance_month
-                this.paymentData.selectedLoanLabel = finance_data.loan_type
-                this.paymentData.firstFinanceRepaymentDate = finance_data.first_deb_repay_date
-                this.paymentData.interestPayDate = finance_data.interest_pay_date
-                this.paymentData.dateOfFirstInterestPayment = finance_data.date_of_first_interest_payment
-                this.paymentData.selectedBank = finance_data.bank.name
-                this.paymentData.principleAmmount = finance_data.principal_amount
-                this.paymentData.interestRate = finance_data.interest_rate                
-                this.paymentData.selectedLoanType = payment_data.selectedLoanType.value 
-                this.paymentData.shareHolderLoanCheck = finance_data.shareholder_loan_check
-                if(finance_data.pik_options_data != ''){
-                    this.paymentData.pikOptions = JSON.parse(finance_data.pik_options_data)
-                    var pikOptions = JSON.parse(finance_data.pik_options_data)
-                    
-                   
-                    var self = this
-                    if(this.paymentFrequency == 'monthly'){
-                        var years_arr = []
+                if(payment_data != null){
+                    this.paymentFrequency = finance_data.payment_frequency
+                    this.paymentData.paymentYear = finance_data.finance_year
+                    this.paymentData.paymentMonth = finance_data.finance_month
+                    this.paymentData.selectedLoanLabel = finance_data.loan_type
+                    this.paymentData.firstDebtRepaymentDate = finance_data.first_deb_repay_date
+                    this.paymentData.interestPayDate = finance_data.interest_pay_date
+                    this.paymentData.dateOfFirstInterestPayment = finance_data.date_of_first_interest_payment
+                    this.paymentData.selectedBank = finance_data.bank.name
+                    this.paymentData.principleAmmount = finance_data.principal_amount
+                    this.paymentData.interestRate = finance_data.interest_rate                
+                    this.paymentData.selectedLoanType = payment_data.selectedLoanType.value 
+                    this.paymentData.shareHolderLoanCheck = finance_data.shareholder_loan_check
+                    if(finance_data.pik_options_data != ''){
+                        this.paymentData.pikOptions = JSON.parse(finance_data.pik_options_data)
+                        var pikOptions = JSON.parse(finance_data.pik_options_data)
                         
-                        pikOptions.forEach(function(ele) {
-                            var data =  ele.split('-');
-                            var month = data[0]
-                            var year = data[1]
-                            if(years_arr.indexOf(year) == -1){
-                                years_arr.push(year)                    
-                                self.pikOptionsTitle.push(year)
-                            }  
-                            self.pikOptions.push({
-                                for: year,
-                                data: month
+                        // console.log(pikOptions)
+                        var self = this
+                        if(this.paymentFrequency == 'monthly'){
+                            var years_arr = []
+                            
+                            pikOptions.forEach(function(ele) {
+                                var data =  ele.split('-');
+                                var month = data[0]
+                                var year = data[1]
+                                if(years_arr.indexOf(year) == -1){
+                                    years_arr.push(year)                    
+                                    self.pikOptionsTitle.push(year)
+                                }  
+                                self.pikOptions.push({
+                                    for: year,
+                                    data: month
+                                })
                             })
-                        })
-                    }else if(this.paymentFrequency == 'quaterly'){
-                        this.pikOptionsTitle.push('Quaterly')
-                        pikOptions.forEach(function(ele) {                            
-                            self.pikOptions.push({
-                                for: 'Quaterly',
-                                data: ele
+                        }else if(this.paymentFrequency == 'quaterly'){
+                            this.pikOptionsTitle.push(this.$t('Quaterly'))
+                            pikOptions.forEach(function(ele) {                            
+                                self.pikOptions.push({
+                                    for: self.$t('Quaterly'),
+                                    data: ele
+                                })
                             })
-                        })
 
-                    }else if(this.paymentFrequency == 'semi-yearly'){
-                        this.pikOptionsTitle.push('Semi Yearly')
-                        pikOptions.forEach(function(ele) {
-                            self.pikOptions.push({
-                                for: 'Semi Yearly',
-                                data: ele
+                        }else if(this.paymentFrequency == 'semi-yearly'){
+                            this.pikOptionsTitle.push(this.$t('Semi Yearly'))
+                            pikOptions.forEach(function(ele) {
+                                self.pikOptions.push({
+                                    for: self.$t('Semi Yearly'),
+                                    data: ele
+                                })
                             })
-                        })
-                    }else{
-                        this.pikOptionsTitle.push('Yearly')
-                        pikOptions.forEach(function(ele) {
-                            self.pikOptions.push({
-                                for: 'Yearly',
-                                data: ele
+                        }else{
+                            this.pikOptionsTitle.push(this.$t('Yearly'))
+                            pikOptions.forEach(function(ele) {
+                                self.pikOptions.push({
+                                    for: self.$t('Yearly'),
+                                    data: ele
+                                })
                             })
-                        })
+                        }
+
                     }
-                }
 
-                if(payment_data.specialPayment.length > 0 && payment_data.specialPayment[0].payment != null && payment_data.specialPayment[0].date != null){
-                    this.paymentData.specialPayments = payment_data.specialPayment
+                    if(payment_data.specialPayment.length > 0 && payment_data.specialPayment[0].payment != null && payment_data.specialPayment[0].date != null){
+                        this.paymentData.specialPayments = payment_data.specialPayment
+                    }else{
+                        this.paymentData.specialPayments = ''
+                    }
+
+                    if(finance_data.bullet_loan_payment != null){
+                        this.paymentData.bulletLoanPayment = finance_data.bullet_loan_payment
+                    }else{
+                        this.paymentData.bulletLoanPayment = 0
+                    }
+                    
+
+                    
+                    this.showTableData(this.paymentFrequency, this.paymentData)
                 }else{
-                    this.paymentData.specialPayments = ''
+                    this.$router.push({ name: "DebtList"})  
                 }
-
-                if(finance_data.bullet_loan_payment != null){
-                    this.paymentData.bulletLoanPayment = finance_data.bullet_loan_payment
-                }else{
-                    this.paymentData.bulletLoanPayment = 0
-                }
-                
-
-                
-                this.showTableData(this.paymentFrequency, this.paymentData)
                 this.loader = false
             }).catch(error=> {
-                console.log(error)
-                // this.$router.push({ name: "FinancingView"})
+                this.$router.push({ name: "DebtList"})
                 this.loader = false
             })
         }else{
-            this.$router.push({ name: "FinancingView"})
+            this.$router.push({ name: "DebtFinancingView"})
         }   
     },
     methods: {
@@ -320,7 +311,7 @@
             let principal_ammount = payment_data.principleAmmount
             let interest_rate = payment_data.interestRate / 100
             let interest_rate_without_percent = payment_data.interestRate
-            let first_repay_date = payment_data.firstFinanceRepaymentDate
+            let first_repay_date = payment_data.firstDebtRepaymentDate
             let special_payments = payment_data.specialPayments
             let bullet_payment_data = payment_data.bulletLoanPayment
             let pikOptions = payment_data.pikOptions
@@ -348,7 +339,6 @@
             var main_principal_ammount = parseFloat(principal_ammount)
             var  global_simple_interest_rate_per_month =  ( (parseFloat(interest_rate_without_percent)/12)/100 )
             var total_number_of_months = (parseInt(year)*12) + parseInt(month)   
-
             if(loan_type == 'amortizing-loan'){
                 //amortizing Loan
                 if(freq == 'monthly'){
@@ -363,6 +353,8 @@
                             month: repay_date.getMonth()+1
                         })
                     }
+
+                 
                     var self = this
                     var special_payment_months_arr = []
 
@@ -371,8 +363,8 @@
                     total_year_months_arr.forEach(function(ele) {
                         
                         if(years_arr.indexOf(ele.year) == -1){
-                           years_arr.push(ele.year)                    
-                           self.years.push(ele.year)
+                            years_arr.push(ele.year)                    
+                            self.years.push(self.$t('Year')+' '+ele.year)
                         } 
 
                         var final_selected_month = months_arr[ele.month - 1]   
@@ -394,7 +386,7 @@
 
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(global_simple_interest_rate_per_month))
 
-                        var data_for_year = ele.year                        
+                        var data_for_year = self.$t('Year')+' '+ele.year                                   
                          
 
                         var final_interest_per_data = parseFloat(interest_per_data).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2})
@@ -475,7 +467,7 @@
                     })
                 }else if(freq == 'quaterly'){
                     var amortizing_interest_rate_per_quarter = global_simple_interest_rate_per_month * 3
-                    this.table_dynamic_header = 'Quarter'
+                    this.table_dynamic_header = 'Quater'
                      if( parseInt(month) > 0 && parseInt(month) <= 3){
                         var total_number_of_quarters = (parseInt(year) * 4)+1
 
@@ -521,7 +513,6 @@
 
                     var repay_date = new Date(first_repay_date)
                     var final_data = []
-                    this.years.push('quaterly')
                     var in_count = 0
                     for( var i = 0; i < total_number_of_quarters; i++){
                         if(i == 0){
@@ -535,7 +526,13 @@
                         select_date_key_2.setMonth(select_date_key_2.getMonth()+2)
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
-                       
+
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
+
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(amortizing_interest_rate_per_quarter))
                                             
                         var final_selected_month = selected_month                      
@@ -571,12 +568,12 @@
                                 
                                 var special_payment_year = special_payment_date.getFullYear()
                                 
-                                if(special_payment_month > select_date_key_1.getMonth() && special_payment_month < select_date_key_2.getMonth() && special_payment_year == data_for_year){
+                                if(special_payment_month >= select_date_key_1.getMonth() && special_payment_month <= select_date_key_2.getMonth() && special_payment_year == data_for_year){
                                     
                                     self.years_data.push(
                                         {
                                             special_payment: true,
-                                            for : 'quaterly',
+                                            for : this.$t('Year')+' '+for_year,
                                             selected_month : final_selected_month,
                                             main_ammount :parseFloat(principal_ammount).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2}),
                                             periodic_payment : ele.payment.toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2})+' (Special Payment)',
@@ -625,7 +622,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'quaterly',
+                                    for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_ammount,
@@ -667,7 +664,7 @@
                     last_date.setMonth(last_date.getMonth() + ((parseInt(year)*12) +  parseInt(month)))
 
                     var repay_date = new Date(first_repay_date)
-                    this.years.push('semi-yearly')
+                   
                     var in_count = 0
                     for( var i = 0; i < total_number_of_half_years; i++){
                         if(i == 0){
@@ -681,7 +678,12 @@
                         select_date_key_2.setMonth(select_date_key_2.getMonth()+5)
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
-                  
+
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
 
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(amortizing_interest_rate_per_half_year))
 
@@ -716,11 +718,11 @@
                                 
                                 var special_payment_year = special_payment_date.getFullYear()
                                 
-                                if(special_payment_month > select_date_key_1.getMonth() && special_payment_month < select_date_key_2.getMonth() && special_payment_year == data_for_year){
+                                if(special_payment_month >= select_date_key_1.getMonth() && special_payment_month <= select_date_key_2.getMonth() && special_payment_year == data_for_year){
                                     self.years_data.push(
                                         {
                                             special_payment: true,
-                                            for : 'semi-yearly',
+                                            for : this.$t('Year')+' '+for_year,
                                             selected_month : final_selected_month,
                                             main_ammount :parseFloat(principal_ammount).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2}),
                                             periodic_payment : ele.payment.toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2})+' (Special Payment)',
@@ -768,7 +770,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'semi-yearly',
+                                    for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_ammount,
@@ -794,7 +796,7 @@
                     
                     var last_date = new Date(first_repay_date)
                     last_date.setMonth(last_date.getMonth() + ((parseInt(year)*12) +  parseInt(month)))
-                    this.years.push('yearly')
+                    this.years.push(this.$t('Yearly'))
                     for( var i = 0; i < total_number_of_years; i++){
 
                         var repay_year = new Date(first_repay_date)
@@ -836,7 +838,7 @@
                                     self.years_data.push(
                                         {
                                             special_payment: true,
-                                            for : 'yearly',
+                                            for : this.$t('Yearly'),
                                             selected_month : final_selected_year,
                                             main_ammount :parseFloat(principal_ammount).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2}),
                                             periodic_payment : ele.payment.toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2})+' (Special Payment)',
@@ -887,7 +889,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'yearly',
+                                    for : this.$t('Yearly'),
                                     selected_month : final_selected_year,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_ammount,
@@ -920,17 +922,21 @@
                    
                       
                     var in_count = 0
+                    var first_count = 0
                     total_year_months_arr.forEach(function(ele) {
+
                         if(years_arr.indexOf(ele.year) == -1){
                            years_arr.push(ele.year)                    
-                           self.years.push(ele.year)
-                        }      
+                           self.years.push(self.$t('Year')+' '+ele.year)
+                        }        
+
                         var final_selected_month = months_arr[ele.month - 1]     
 
                         var previous_principal_ammount = parseFloat(principal_ammount).toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2})
                         
                         var pikOptionData = final_selected_month+'-'+ele.year
 
+                         
                         if(pikOptions.indexOf(pikOptionData) != -1){
                             if(in_count == 0){
                                 main_principal_ammount = principal_ammount
@@ -939,6 +945,7 @@
                         }else{
                             main_principal_ammount = principal_ammount
                         } 
+
 
                         var total_payment_calc_1 = parseFloat(parseFloat(global_simple_interest_rate_per_month) * parseFloat(main_principal_ammount)) 
                         var total_payment_calc_2 = parseFloat(1 - Math.pow( (1 + parseFloat(global_simple_interest_rate_per_month)) , parseInt('-'+total_number_of_months) ) ) 
@@ -975,7 +982,7 @@
                             }
                             self.years_data.push(
                                 {
-                                    for : ele.year,
+                                    for : self.$t('Year')+' '+ele.year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -991,7 +998,7 @@
                    
                 }else if(freq == 'quaterly'){
                     var annuity_interest_rate_per_quarter = global_simple_interest_rate_per_month * 3
-                    this.table_dynamic_header = 'Quarter'
+                    this.table_dynamic_header = 'Quater'
 
                     if( parseInt(month) > 0 && parseInt(month) <= 3){
                         var total_number_quarter_for_periodic_val = (parseInt(year) * 4)+1
@@ -1038,7 +1045,6 @@
                     var in_count = 0
                     var repay_date = new Date(first_repay_date)
                     var final_data = []
-                    this.years.push('quaterly')
                     for( var i = 0; i < total_number_quarter_for_periodic_val; i++){
                         if(i == 0){
                             repay_date.setMonth(repay_date.getMonth() + 0) 
@@ -1050,7 +1056,13 @@
                         select_date_key_2.setMonth(select_date_key_2.getMonth()+2)
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
-                       
+
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
+              
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(annuity_interest_rate_per_quarter))
 
                         var final_selected_month = selected_month
@@ -1106,7 +1118,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'quaterly',
+                                    for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1147,7 +1159,6 @@
                     last_date.setMonth(last_date.getMonth() + ((parseInt(year)*12) +  parseInt(month)))
 
                     var repay_date = new Date(first_repay_date)
-                    this.years.push('semi-yearly')
                     var in_count = 0
                     for( var i = 0; i < total_number_year_for_periodic_val; i++){
                         
@@ -1162,6 +1173,12 @@
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
                         
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
+
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(annuity_interest_rate_per_half_yearly))
 
                         var final_selected_month = selected_month
@@ -1214,7 +1231,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'semi-yearly',
+                                    for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1239,9 +1256,9 @@
                     var annuity_interest_rate_per_year = global_simple_interest_rate_per_month * 12
                     var last_date = new Date(first_repay_date)
                     last_date.setMonth(last_date.getMonth() + ((parseInt(year)*12) +  parseInt(month)))
-                         console.log(total_number_of_years)
+                        //  console.log(total_number_of_years)
                    
-                    this.years.push('yearly')
+                    this.years.push(this.$t('Yearly'))
                     var in_count = 0
                     for( var i = 0; i < total_number_of_years; i++){
                        
@@ -1307,7 +1324,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'yearly',
+                                    for : this.$t('Yearly'),
                                     selected_month : final_selected_year,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1350,7 +1367,7 @@
                     total_year_months_arr.forEach(function(ele) {
                         if(years_arr.indexOf(ele.year) == -1){
                            years_arr.push(ele.year)                    
-                           self.years.push(ele.year)
+                           self.years.push(self.$t('Year')+' '+ele.year)
                         }       
                         var final_selected_month = months_arr[ele.month - 1]   
 
@@ -1405,7 +1422,7 @@
                             }
                             self.years_data.push(
                                 {
-                                    for : ele.year,
+                                    for : self.$t('Year')+' '+ele.year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1422,7 +1439,7 @@
                 }else if(freq == 'quaterly'){
 
                     var bullet_interest_rate_per_quarter = global_simple_interest_rate_per_month * 3
-                    this.table_dynamic_header = 'Quarter'
+                    this.table_dynamic_header = 'Quater'
                     if( parseInt(month) > 0 && parseInt(month) <= 3){
                         var total_number_of_quarters = (parseInt(year) * 4)+1
                     }else if(parseInt(month) <= 6 && parseInt(month) > 3){
@@ -1440,7 +1457,6 @@
 
                     var repay_date = new Date(first_repay_date)
                     var final_data = []
-                    this.years.push('quaterly')
 
                     for( var i = 0; i < total_number_of_quarters; i++){
                         if(i == 0){
@@ -1454,6 +1470,12 @@
                         select_date_key_2.setMonth(select_date_key_2.getMonth()+2)
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
+
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
 
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(bullet_interest_rate_per_quarter))
 
@@ -1521,7 +1543,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'quaterly',
+                                     for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1548,7 +1570,6 @@
                     var periodic_payment = parseFloat((principal_ammount/total_number_year_for_periodic_val))
 
                     var repay_date = new Date(first_repay_date)
-                    this.years.push('semi-yearly')
                     for( var i = 0; i < total_number_year_for_periodic_val; i++){
                         if(i == 0){
                             repay_date.setMonth(repay_date.getMonth() + 0) 
@@ -1562,6 +1583,12 @@
                         select_date_key_2.setMonth(select_date_key_2.getMonth()+5)
 
                         var selected_month =  months_arr[select_date_key_1.getMonth()]+' '+select_date_key_1.getFullYear()+' - '+months_arr[select_date_key_2.getMonth()]+' '+  select_date_key_2.getFullYear() 
+
+                        var for_year = select_date_key_2.getFullYear(); 
+                        if(years_arr.indexOf(for_year) == -1){
+                            years_arr.push(for_year)                    
+                            this.years.push(this.$t('Year')+' '+for_year);
+                        } 
 
                         interest_per_data = parseFloat(parseFloat(principal_ammount) * parseFloat(bullet_interest_rate_per_half_year))
 
@@ -1625,7 +1652,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'semi-yearly',
+                                    for : this.$t('Year')+' '+for_year,
                                     selected_month : final_selected_month,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
@@ -1651,7 +1678,7 @@
                     
                     var last_date = new Date(first_repay_date)
                     last_date.setMonth(last_date.getMonth() + ((parseInt(year)*12) +  parseInt(month)))
-                    this.years.push('yearly')
+                      this.years.push(this.$t('Yearly'))
                     
                     for( var i = 0; i < total_number_of_years; i++){
                         var repay_year = new Date(first_repay_date)
@@ -1717,7 +1744,7 @@
                             }
                             this.years_data.push(
                                 {
-                                    for : 'yearly',
+                                    for : this.$t('Yearly'),
                                     selected_month : final_selected_year,
                                     main_ammount : previous_principal_ammount,
                                     periodic_payment : final_periodic_payment,
