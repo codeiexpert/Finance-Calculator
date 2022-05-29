@@ -36,6 +36,7 @@
         "vue-dragscroll": "^3.0.1",
         "vue-i18n": "^8.26.8",
         "vue-month-picker": "^1.5.1",
+        "vue-numeric": "^2.5.0",
         "vue-numeric-input": "^2.0.0",
         "vue-router": "^3.5.3",
         "vue-select": "^2.6.4",

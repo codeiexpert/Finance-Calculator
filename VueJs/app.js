@@ -19,6 +19,9 @@ Vue.use(VTooltip)
 import VueInternationalization from 'vue-i18n'
 Vue.use(VueInternationalization);
 
+import VueNumeric from 'vue-numeric'
+Vue.use(VueNumeric);
+
 const i18n = new VueInternationalization({
     locale: 'en',
     messages: loadLocaleMessages()

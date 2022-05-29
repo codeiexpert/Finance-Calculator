@@ -8,14 +8,14 @@ use App\Models\DebtFinanceList;
 use Auth;
 use Carbon\Carbon;
 
-class FinanceController extends Controller
+class DebtFinanceController extends Controller
 {
 
     public function addBank(Request $request)
     {
        
         if (Auth::user()->user_role == 'Client') {
-            $bank_count = Banks::where('client_id', Auth::user()->client_id)->where('name', trim($request->bank_name))->count();
+            $bank_count = Banks::where('user_id', Auth::user()->id)->where('name', trim($request->bank_name))->count();
             if ($bank_count > 0) {
                 $response = [
                     'success' => false,
@@ -23,7 +23,7 @@ class FinanceController extends Controller
                 ];
             } else {
                 $bank = new Banks;
-                $bank->client_id = Auth::user()->client_id;
+                $bank->user_id = Auth::user()->id;
                 $bank->name= trim($request->bank_name);
                 $bank->save();
 
@@ -44,7 +44,7 @@ class FinanceController extends Controller
 
     public function getBanks(Request $request)
     {
-        $banks = Banks::where('client_id', Auth::user()->client_id)->get()->toArray();
+        $banks = Banks::where('user_id', Auth::user()->id)->get()->toArray();
 
         return response()->json([
             'success' => true,
@@ -58,7 +58,7 @@ class FinanceController extends Controller
         // print_r($request->all());die;
 
         $debt_data = new DebtFinanceList;
-        $debt_data->client_id = Auth::user()->client_id;
+        $debt_data->user_id = Auth::user()->id;
         $debt_data->bank = $request->selectedBank['value'];
         $debt_data->loan_type = $request->selectedLoanType['label'];
         $debt_data->principal_amount = $request->principleAmmount;
@@ -90,8 +90,8 @@ class FinanceController extends Controller
     public function getDebtFinanceData($id)
     {
             if (Auth::user()->role == 'Client') {
-                if (DebtFinanceList::where('id', $id)->where('client_id', Auth::user()->client_id)->count() > 0) {
-                    $debt_finance_data = DebtFinanceList::with('bank:id,name')->where('id', $id)->where('client_id', Auth::user()->client_id)->first()->toArray();
+                if (DebtFinanceList::where('id', $id)->where('user_id', Auth::user()->id)->count() > 0) {
+                    $debt_finance_data = DebtFinanceList::with('bank:id,name')->where('id', $id)->where('user_id', Auth::user()->id)->first()->toArray();
 
                     if ($debt_finance_data) {
                         return response()->json([
@@ -122,8 +122,8 @@ class FinanceController extends Controller
     {
         
         if (isset($request->id)) {
-            if (DebtFinanceList::where('client_id', $request->id)->count() > 0) {
-                $debt_finance_data = DebtFinanceList::with(['bank:id,name'])->where('client_id', $request->id)->orderBy('id', 'desc')->paginate(10);
+            if (DebtFinanceList::where('user_id', $request->id)->count() > 0) {
+                $debt_finance_data = DebtFinanceList::with(['bank:id,name'])->where('user_id', $request->id)->orderBy('id', 'desc')->paginate(10);
 
                 if ($debt_finance_data) {
                     return response()->json([
@@ -138,7 +138,7 @@ class FinanceController extends Controller
                 ], 201);
             }
         }else{
-            $debt_finance_data = DebtFinanceList::with(['bank:id,name'])->where('client_id', Auth::user()->client_id)->orderBy('id', 'desc')->paginate(10);
+            $debt_finance_data = DebtFinanceList::with(['bank:id,name'])->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
 
             if ($debt_finance_data) {
                 return response()->json([

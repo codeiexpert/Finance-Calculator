@@ -11,14 +11,14 @@
                         </div>
                         <div class="d-flex align-items-center py-1" v-if="userRole == 'Admin'">           
                             <div>
-                            <router-link :to='{name:"ClientManagement"}' exact class="btn btn-sm btn-secondary">
+                            <router-link :to='{name:"Dashboard", params:{id: user_id}}' exact class="btn btn-sm btn-secondary">
                                 {{ $t('Back') }}
                             </router-link>
                             </div>
                         </div>
                         <div class="d-flex align-items-center py-1" v-else>           
                             <div>
-                            <router-link :to="{ name: 'DebtList' }" exact class="btn btn-sm btn-secondary">
+                            <router-link :to='{name:"Dashboard"}' exact class="btn btn-sm btn-secondary">
                                 {{ $t('Back') }}
                             </router-link>
                             </div>
@@ -185,6 +185,7 @@
         pikOptions:[],
         pikOptionsTitle:[],
         userRole: localStorage.user_role,
+        user_id: '',
         paymentData:{
             paymentYear: 1,
             paymentMonth: 0,            
@@ -209,7 +210,8 @@
                 
                 let finance_data = res.data.finance_data
                 let payment_data = JSON.parse(finance_data.payment_data)
-                
+                this.user_id = finance_data.user_id
+                console.log(this.user_id )
                 if(payment_data != null){
                     this.paymentFrequency = finance_data.payment_frequency
                     this.paymentData.paymentYear = finance_data.finance_year
@@ -290,15 +292,15 @@
                     
                     this.showTableData(this.paymentFrequency, this.paymentData)
                 }else{
-                    this.$router.push({ name: "DebtList"})  
+                    this.$router.push({ name: "Dashboard"})  
                 }
                 this.loader = false
             }).catch(error=> {
-                this.$router.push({ name: "DebtList"})
+                this.$router.push({ name: "Dashboard"})
                 this.loader = false
             })
         }else{
-            this.$router.push({ name: "DebtFinancingView"})
+            this.$router.push({ name: "FinancingView"})
         }   
     },
     methods: {

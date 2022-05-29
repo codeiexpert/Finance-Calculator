@@ -12,14 +12,14 @@
                             </div>
                             <div class="d-flex align-items-center py-1" v-if="userRole == 'Admin'">
                                 <div>
-                                    <router-link :to='{name:"ClientManagement"}' exact class="btn btn-sm btn-secondary">
+                                    <router-link :to='{name:"Dashboard", params:{id: user_id}}' exact class="btn btn-sm btn-secondary">
                                         {{ $t('Back') }}
                                     </router-link>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center py-1" v-else>
                                 <div>
-                                    <router-link :to="{ name: 'DebtList' }" exact class="btn btn-sm btn-secondary">
+                                    <router-link  :to='{name:"Dashboard"}' exact class="btn btn-sm btn-secondary">
                                         {{ $t('Back') }}
                                     </router-link>
                                 </div>
@@ -188,6 +188,7 @@
                 userRole: localStorage.user_role,
                 table_dynamic_header: 'Year',
                 special_payments_data: [],
+                user_id:'',
                 paymentData: {
                     paymentYear: 1,
                     paymentMonth: 0,
@@ -209,6 +210,8 @@
                 this.loader = true
                 Debt.getDebtFinanceData(this.$route.params.id).then(res => {
                     let finance_data = res.data.finance_data
+                    this.user_id = finance_data.user_id
+                    console.log(this.user_id )
                     let payment_data = JSON.parse(finance_data.payment_data)
                     if (payment_data != null) {
                         this.paymentFrequency = finance_data.payment_frequency
@@ -241,19 +244,19 @@
                         this.showTableData(this.paymentFrequency, this.paymentData)
                     } else {
                         this.$router.push({
-                            name: "DebtList"
+                            name: "user_id"
                         })
                     }
                     this.loader = false
                 }).catch(error => {
                     this.$router.push({
-                        name: "DebtList"
+                        name: "user_id"
                     })
                     this.loader = false
                 })
             } else {
                 this.$router.push({
-                    name: "DebtFinancingView"
+                    name: "FinancingView"
                 })
             }
         },

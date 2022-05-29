@@ -471,16 +471,10 @@
     },
     mounted() {
         if(localStorage.user_role == 'Admin') {
-                this.$router.push({ name: "ClientManagement" })
+            this.$router.push({ name: "ClientManagement" })           
         }else{
-            var user_access  = localStorage.getItem('user_access')
-
-            if( user_access == 'all' || user_access.includes('debt-finance') == true ){
-                this.getBanks()
-                this.createMonthYearValues()
-            }else{
-                this.$router.push({ name: "Profile" })
-            }
+            this.getBanks()
+            this.createMonthYearValues()
         }
     },
     methods: {

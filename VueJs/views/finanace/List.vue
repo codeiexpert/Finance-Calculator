@@ -66,7 +66,7 @@
                                     <td>{{debt.created_at | formatDate }}</td>
                                     <td>
                                       <div class="d-flex align-items-center">
-                                        <router-link v-if="debt.shareholder_loan_check == 0" :to='{name:"DebtFinancingWithoutPikView",params:{id: debt.id}}' class="btn btn-icon btn-light btn-hover-primary btn-sm" >
+                                        <router-link v-if="debt.shareholder_loan_check == 0" :to='{name:"FinancingWithoutPikView",params:{id: debt.id}}' class="btn btn-icon btn-light btn-hover-primary btn-sm" >
                                             <span class="svg-icon svg-icon-info svg-icon-2" v-tooltip="$t('Without Pik Options')">
                                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                   <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -77,7 +77,7 @@
                                               </svg>
                                             </span>
                                           </router-link>
-                                          <router-link v-else :to='{name:"DebtFinancingWithPikView",params:{id: debt.id}}' class="btn btn-icon btn-light btn-hover-primary btn-sm">
+                                          <router-link v-else :to='{name:"FinancingWithPikView",params:{id: debt.id}}' class="btn btn-icon btn-light btn-hover-primary btn-sm">
                                             <span class="svg-icon svg-icon-info svg-icon-2" v-tooltip="$t('With Pik Options')">
                                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                   <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -136,7 +136,7 @@
   import moment from 'moment';
 
   export default {
-    name: 'DebtFinancingWithoutPikView',
+    name: 'FinancingWithoutPikView',
     data() {
       return {
         loader: false, 
@@ -157,15 +157,9 @@
         
       }else{
         if(localStorage.user_role == 'Admin') {
-            this.$router.push({ name: "ClientManagement" })
+          this.$router.push({ name: "ClientManagement" })            
         }else{
-          var user_access  = localStorage.getItem('user_access')
-
-          if( user_access == 'all' || user_access.includes('debt-finance-list') == true ){
-            this.showData()
-          }else{
-            this.$router.push({ name: "Profile" })
-          }
+          this.showData()
         }
       }
        
