@@ -1,8 +1,5 @@
 
 ### About The Project
-
-<img src="screenshots/screenshot-1.png" alt="Calculator">
-
 This is a multilingual laravel project integeration with vuejs.
 This is a kind of finanance calculator for different type of loans with responsive design 
 & easy to understand & manage.
